@@ -5,16 +5,16 @@ import processing.core.PApplet;
 
 
 // you SHOULD NOT need to edit any of these variables
-int margin = 300; // margin from sides of window
-final int padding = 35; // padding between buttons and also their width/height 'changed to 60 to scale up'
-ArrayList trials = new ArrayList(); //contains the order of buttons that activate in the test
-int trialNum = 0; //the current trial number (indexes into trials array above)
-int startTime = 0; // time starts when the first click is captured.
-int userX = mouseX; //stores the X position of the user's cursor
-int userY = mouseY; //stores the Y position of the user's cursor
-int finishTime = 0; //records the time of the final click
-int hits = 0; //number of succesful clicks
-int misses = 0; //number of missed clicks
+int margin; // margin from sides of window
+ int padding; // padding between buttons and also their width/height 'changed to 60 to scale up'
+ArrayList trials; //contains the order of buttons that activate in the test
+int trialNum; //the current trial number (indexes into trials array above)
+int startTime; // time starts when the first click is captured.
+int userX; //stores the X position of the user's cursor
+int userY; //stores the Y position of the user's cursor
+int finishTime; //records the time of the final click
+int hits; //number of succesful clicks
+int misses; //number of missed clicks
 
 // You can edit variables below here and also add new ones as you see fit
 int numRepeats = 3; //sets the number of times each button repeats in the test (you can edit this)
@@ -37,6 +37,7 @@ void draw()
     text("Accuracy: " + (float)hits*100f/(float)(hits+misses) +"%", width / 2, height / 2 + 60);
     text("Total time taken: " + (finishTime-startTime) / 1000f + " sec", width / 2, height / 2 + 80);
     text("Average time for each button: " + ((finishTime-startTime) / 1000f)/(float)(hits+misses) + " sec", width / 2, height / 2 + 100);
+    text("Press any key to restart...", width / 2, height / 2 + 140);
     
     return; //return, nothing else to do now test is over
   }
@@ -111,6 +112,11 @@ void mousePressed() // test to see if hit was in target!
   trialNum++; // Increment trial number
 }
 
+void keyPressed()
+{
+  if (trialNum >= trials.size())
+    setup();
+}
 
 void updateUserMouse() // YOU CAN EDIT THIS
 {
@@ -162,6 +168,20 @@ void grow(int b)
 
 void setup()
 {
+  margin = 300; // margin from sides of window
+  padding = 35; // padding between buttons and also their width/height 'changed to 60 to scale up'
+  trials = new ArrayList(); //contains the order of buttons that activate in the test
+  trialNum = 0; //the current trial number (indexes into trials array above)
+  startTime = 0; // time starts when the first click is captured.
+  userX = mouseX; //stores the X position of the user's cursor
+  userY = mouseY; //stores the Y position of the user's cursor
+  finishTime = 0; //records the time of the final click
+  hits = 0; //number of succesful clicks
+  misses = 0; //number of missed clicks
+
+// You can edit variables below here and also add new ones as you see fit
+int numRepeats = 3; //sets the number of times each button repeats in the test (you can edit this)
+  
   size(900,900,P2D); // set the size of the window
   noCursor(); // hides the system cursor (can turn on for debug, but should be off otherwise!)
   noStroke(); //turn off all strokes, we're just using fills here (can change this if you want)
