@@ -6,7 +6,7 @@ import processing.core.PApplet;
 
 // you SHOULD NOT need to edit any of these variables
 int margin; // margin from sides of window
- int padding; // padding between buttons and also their width/height 'changed to 60 to scale up'
+int padding; // padding between buttons and also their width/height 'changed to 60 to scale up'
 ArrayList trials; //contains the order of buttons that activate in the test
 int trialNum; //the current trial number (indexes into trials array above)
 int startTime; // time starts when the first click is captured.
@@ -17,8 +17,18 @@ int hits; //number of succesful clicks
 int misses; //number of missed clicks
 
 // You can edit variables below here and also add new ones as you see fit
-int numRepeats = 3; //sets the number of times each button repeats in the test (you can edit this)
+int numRepeats; //sets the number of times each button repeats in the test (you can edit this)
 
+// HW 6 variables - duplicates for sanity
+int tn; //trial number
+int id; //participant ID
+int sX; //start X position
+int sY; //start Y position
+int tX; //target X position
+int tY; //target Y position
+int wh; //width of button
+int st; //time taken
+int sf; //success/fail
 
 void draw()
 {
@@ -77,7 +87,7 @@ void mousePressed() // test to see if hit was in target!
 
   if (trialNum == 0) //check if first click
     startTime = millis();
-
+  
   if (trialNum == trials.size() - 1) //check if final click
   {
     finishTime = millis();
@@ -96,12 +106,14 @@ void mousePressed() // test to see if hit was in target!
   if ((userX > bounds.x && userX < bounds.x + bounds.width*2) && (userY > bounds.y && userY < bounds.y + bounds.height*2)) // test to see if hit was within bounds
   //multiplying by 2 because the square the user is on is grown by a factor of 2
   {
-    System.out.println("HIT! " + trialNum + " " + (millis() - startTime)); // success
+    //System.out.println("HIT! " + trialNum + " " + (millis() - startTime)); // success
+    System.out.println((trialNum+1) + "," + id + "," + sX + "," + sY + "," + (bounds.x+bounds.width) + "," + (bounds.y+bounds.height) + "," + wh + "," + (millis() - st) + ",1");
     hits++;
   } 
   else
   {
-    System.out.println("MISSED! " + trialNum + " " + (millis() - startTime)); // fail
+    //System.out.println("MISSED! " + trialNum + " " + (millis() - startTime)); // fail
+    System.out.println((trialNum+1) + "," + id + "," + sX + "," + sY + "," + (bounds.x+bounds.width) + "," + (bounds.y+bounds.height) + "," + wh + "," + (millis() - st) + ",0");
     misses++;
   }
 
@@ -110,6 +122,9 @@ void mousePressed() // test to see if hit was in target!
   //userY = height/2; //example manipulation
 
   trialNum++; // Increment trial number
+  sX = userX;
+  sY = userY;
+  st = millis();
 }
 
 void keyPressed()
@@ -179,8 +194,18 @@ void setup()
   hits = 0; //number of succesful clicks
   misses = 0; //number of missed clicks
 
-// You can edit variables below here and also add new ones as you see fit
-int numRepeats = 3; //sets the number of times each button repeats in the test (you can edit this)
+  // You can edit variables below here and also add new ones as you see fit
+  int numRepeats = 10; //sets the number of times each button repeats in the test (you can edit this)
+
+  tn = trialNum; //trial number
+  id = 3; //participant ID
+  sX = 0; //start X position
+  sY = 0; //start Y position
+  tX = 0; //target X position
+  tY = 0; //target Y position
+  wh = padding; //width of button
+  st = 0; //time taken
+  sf = 0; //success/fail
   
   size(900,900,P2D); // set the size of the window
   noCursor(); // hides the system cursor (can turn on for debug, but should be off otherwise!)
@@ -198,7 +223,7 @@ int numRepeats = 3; //sets the number of times each button repeats in the test (
       trials.add(i);
 
   Collections.shuffle(trials); // randomize the order of the buttons
-  System.out.println("trial order: " + trials);
+  //System.out.println("trial order: " + trials);
 }
 
 Rectangle getButtonLocation(int i)
